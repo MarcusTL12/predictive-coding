@@ -34,6 +34,13 @@ function get_vector_layer(p::NetworkParams, x, l)
     @view x[(begin+start):(begin+stop)]
 end
 
+function get_weight_layer(p::NetworkParams, w, l)
+    start = p.weight_offsets[l]
+    stop = start + p.layer_sizes[l] * p.layer_sizes[l + 1] - 1
+
+    reshape(w[(begin+start):(begin+stop)], p.layer_sizes[l + 1], p.layer_sizes[l])
+end
+
 function compute_errors!(params::NetworkParams, e, x, μ)
     @. e = x - μ
 end
